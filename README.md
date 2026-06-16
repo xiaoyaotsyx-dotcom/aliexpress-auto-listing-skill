@@ -1,98 +1,129 @@
+# 速卖通自动上架技能包 v3.0
+# AliExpress Auto-Listing Skill Pack v3.0
 
-<p align="center">
-  <img src="https://placehold.co/600x150/ffffff/5b5fe7?text=AliExpress+Auto+Listing&font=Montserrat" width="500">
-</p>
+[![License: AGPLv3](https://img.shields.io/badge/license-AGPLv3-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10+-green.svg)](https://www.python.org/)
+[![Playwright](https://img.shields.io/badge/playwright-latest-orange.svg)](https://playwright.dev/)
 
-<p align="center">
-  <strong>1688 Sourcing → Dianxiaomi ERP → AliExpress Publishing. Fully automated.</strong><br>
-  <strong>1688 采集 → 店小秘 ERP 填表 → 速卖通发布，全自动。</strong>
-</p>
-
-<p align="center">
-  <a href="https://github.com/xiaoyaotsyx-dotcom/aliexpress-listing/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-blue"></a>
-  <a href="#"><img src="https://img.shields.io/github/stars/xiaoyaotsyx-dotcom/aliexpress-listing"></a>
-</p>
+> AI驱动的自动化技能包——从1688采集到速卖通上架，通过店小秘全流程自动完成。
+> An AI-powered automation toolkit that takes a 1688 product and publishes it to AliExpress via Dianxiaomi — end to end.
 
 ---
 
-## What It Does · 做什么
+## 工作流总览
+## Workflow Overview
 
-**One-click AliExpress listing from 1688 sources.** Your AI assistant operates the Dianxiaomi ERP in your browser — filling attributes, pricing SKUs, uploading images, writing descriptions, and hitting publish. No API keys. No manual copy-paste.
+> 流水线分5个阶段：启动 → 采集 → 编辑 → 审核 → 发布。
+> The pipeline runs in 5 phases: Startup → Collection → Editing → QA → Publishing.
 
-**一键把 1688 商品搬上速卖通。** AI 替你操作店小秘 ERP——填属性、定价格、传图片、写描述、点发布。不需要 API，不需要手动复制粘贴。
-
----
-
-## The Problem · 解决的问题
-
-Cross-border sellers spend 2–3 hours per day manually filling Dianxiaomi forms — translating titles, matching attributes, pricing variants, uploading product images, writing descriptions.
-
-跨境卖家每天花 2-3 小时手动填店小秘表单——翻译标题、匹配属性、给 SKU 定价、上传图片、写描述。
-
-**This skill replaces all of that.**
-**这个 skill 全部替你干了。**
+| 阶段 Phase | 内容 What happens | 自动化 Automated |
+|:---|:---|:---:|
+| 0 启动 Startup | Chrome CDP + Relay链 + 登录检查 / Chrome CDP + Relay chain + login check | ✅ |
+| 1 采集 Collect | 1688搜索 → 采集到店小秘采集箱 / 1688 search → collect to Dianxiaomi inbox | ✅ |
+| 2 编辑 Edit | 9个模块: 标题/分类/属性/图片/SKU/描述/包装/模板/其他 / 9 modules: title, category, attributes, images, SKU, description, packaging, templates, others | ✅ |
+| 3 审核 QA | 扫描所有必填字段 → 确认9/9完成 / Scan all required fields → verify 9/9 complete | ✅ |
+| 4 发布 Publish | 保存并移入待发布（需手动点一次按钮）/ Save and move to pending publish (one manual click required) | ⚠️ |
 
 ---
 
-## Quick Start · 快速开始
+## 包含的技能 (15个)
+## Skills Included (15)
 
-```bash
-# 1. Download this repo · 下载仓库
-# 2. Tell your AI: · 告诉 AI：
-"Load aliexpress-listing skill."
-# 3. Say: · 说：
-"上品"
+> 15个模块化技能，适配 Hermes / Claude Code / Codex / 任何支持CDP的AI助手。
+> 15 modular skills. Plug into Hermes, Claude Code, Codex, or any CDP-capable AI agent.
+
+| # | 技能 Skill | 用途 Purpose | 阶段 |
+|:---|:---|:---|:---:|
+| 0 | dxm-startup | Chrome启动 + Relay + Playwright连接 / Chrome launch + Relay + Playwright connect | 启动 |
+| 0.5 | dxm-collection | 1688产品采集 + 属性提取 / 1688 product collection + attribute extraction | 采集 |
+| — | dxm-listing-workflow | 编排器：路由9个编辑模块 / Orchestrator: routes through all 9 edit modules | 编排 |
+| 1 | dxm-basic-info | 英文标题 + 类目选择 / English title + category selection | 编辑 |
+| 2 | dxm-dianxiaomi-info | 店小秘元数据（只读）/ Dianxiaomi metadata (read-only) | 编辑 |
+| 3 | dxm-attributes | 9个必填属性 + 自定义属性清理 / 9 required attributes + custom attribute cleanup | 编辑 |
+| 4 | dxm-product-images | 6张主图 / 裁800 / 翻译 / SKU图 / 6 main images, resize, translate, SKU images | 编辑 |
+| 5 | dxm-sku-pricing | 定价公式 / 库存 / 物流 / SKU编码 / Pricing formula, inventory, logistics, SKU codes | 编辑 |
+| 6 | dxm-pc-description | PC描述（模板+图片编辑+翻译）/ PC description (template + image editing + translation) | 编辑 |
+| 7 | dxm-packaging | 包装重量和尺寸 / Package weight & dimensions | 编辑 |
+| 8 | dxm-templates | 运费模板 + 服务模板 / Shipping template + service template | 编辑 |
+| 9 | dxm-other-info | 海关 / EU合规 / 品牌制造商 / Customs, EU compliance, brand manufacturer | 编辑 |
+| QA | dxm-qa-check | QA扫描 + 所有必填字段验证 / QA scan + verification of all required fields | 审核 |
+| 主 | aliexpress-store-ops | 店铺运营主控（架构、铁律、避坑百科）/ Store ops master (architecture, rules, pitfalls) | 全局 |
+
+---
+
+## 定价公式
+## Pricing Formula
+
+```
+零售价 = 货值 = (1688成本价 + ¥5) × 1.02 ÷ 0.413
+Retail Price = Declared Value = (1688 Cost + ¥5) × 1.02 ÷ 0.413
 ```
 
-> Works with **Hermes Agent / Claude Code / Cursor**.
-> 支持 **Hermes Agent / Claude Code / Cursor**。
+> 公式涵盖国内运费(¥5)、2%退货率、30%平台费率、21%其他费率、20%净利率。
+> Covers: domestic shipping (¥5), 2% return rate, 30% platform fees, 21% other fees, 20% net profit.
 
 ---
 
-## Workflow · 工作流
+## 核心铁律
+## Core Rules
 
-```
-1688 Product Page  →  AI extracts data     →  Dianxiaomi ERP  →  AliExpress
-1688 商品页         →  AI 提取商品数据       →  店小秘 ERP       →  速卖通待发布
-```
+1. **编辑页绝不刷新或重开。** 刷新即丢数据。
+   **Never refresh or reload the edit page.** All data is lost on reload.
 
----
+2. **断连后先 Target.getTargets 检查已有标签页。** 数据可能还在。
+   **After disconnection, check Target.getTargets first.** Existing tabs may still hold your data.
 
-## Skills Included · 包含的子 Skill
+3. **所有星号必填。** 9/9才算完成。
+   **All starred fields must be filled.** 9/9 is the only passing grade.
 
-| Skill · 技能 | What it handles · 负责什么 |
-|------|------|
-| `dxm-collection` | 1688 product data extraction · 1688 商品采集 |
-| `dxm-basic-info` | Title, category, brand · 标题、类目、品牌 |
-| `dxm-attributes` | Attribute matching across platforms · 跨平台属性匹配 |
-| `dxm-sku-pricing` | Variant pricing and stock · SKU 定价与库存 |
-| `dxm-product-images` | Image download, resize, upload · 图片处理上传 |
-| `dxm-pc-description` | Product description generation · 描述文案生成 |
-| `dxm-qa-check` | Quality assurance before publish · 发布前质检 |
-| `dxm-listing-workflow` | End-to-end orchestration · 全流程编排 |
+4. **三振出局。** 同一操作3次失败→停手汇报。
+   **Three strikes, you're out.** Same operation fails 3 times → stop and report.
+
+5. **保存后通知用户手动点发布。** 最后一步对自动化免疫。
+   **Save first, then manually click publish.** The final button resists all automation methods.
 
 ---
 
-## Requirements · 环境要求
+## 系统要求
+## Requirements
 
-- AI assistant with Python execution + CDP browser control · 支持 Python 执行 + CDP 浏览器操控的 AI 助手
-- Google Chrome (your own login) · Chrome 浏览器（你自己的登录态）
-- Dianxiaomi ERP account · 店小秘 ERP 账号
+> Windows 10+ / Google Chrome / Python 3.10+ / Playwright
+> 店小秘账号 + 已绑定的速卖通店铺
+> Dianxiaomi account with AliExpress store connected
 
----
-
-## License · 许可
-
-**AGPLv3 Dual License · 双许可**
-
-| Use Case · 使用场景 | License · 许可 |
-|------|---------|
-| Personal · 个人 | AGPLv3 ✅ Free · 免费 |
-| Commercial · 商用 | [Contact us · 联系我们](mailto:xiaoyao@aibook.online) |
+> Chrome 以调试模式启动：`--remote-debugging-port=9222`
+> Start Chrome in debug mode: `--remote-debugging-port=9222`
 
 ---
 
-## Contact · 联系
+## 快速开始
+## Quick Start
 
-- 📕 RedNote · 小红书: [@瑞吉AI人民公社](https://www.xiaohongshu.com/user/profile/42084313799)
-- 📧 xiaoyao@aibook.online
+1. 启动Chrome调试模式 + CDP中继
+   Start Chrome in debug mode with CDP relay
+
+2. 打开店小秘手动登录（仅一次）
+   Open Dianxiaomi and log in manually (once)
+
+3. 对AI说："帮我上架产品"
+   Tell your AI: "Help me list a product"
+
+4. AI自动完成从采集到上架的全流程
+   The AI handles the rest — from 1688 collection to publishing
+
+5. 最后一步：在弹出的"保存并移入待发布"按钮上手动点击
+   Final step: manually click the "Save and move to pending publish" button
+
+---
+
+## ⚠️ 重要提示
+## Important Note
+
+> **最后一步"保存并移入待发布"按钮对目前已知的所有自动化方法免疫。** 这不是技能包的bug，是店小秘平台的反自动化机制。用户在收到QA扫描完成通知后，需手动点击一次该按钮即可完成上架。
+> **The final "Save and move to pending publish" button resists all known automation methods.** This is Dianxiaomi's anti-automation mechanism, not a bug. After receiving the QA scan completion notification, the user only needs one manual click to finish.
+
+---
+
+*作者: Rigi AI Commons | 小红书 @瑞吉AI人民公社 | AI自动化专家工作流*
+
+*Author: Rigi AI Commons | Xiaohongshu @瑞吉AI人民公社 | AI Automation Expert Workflows*
