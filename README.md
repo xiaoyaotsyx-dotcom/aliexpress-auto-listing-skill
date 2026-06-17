@@ -4,9 +4,10 @@
 [![License: AGPLv3](https://img.shields.io/badge/license-AGPLv3-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-green.svg)](https://www.python.org/)
 [![Playwright](https://img.shields.io/badge/playwright-latest-orange.svg)](https://playwright.dev/)
+[![Stars](https://img.shields.io/github/stars/xiaoyaotsyx-dotcom/aliexpress-auto-listing-skill)](https://github.com/xiaoyaotsyx-dotcom/aliexpress-auto-listing-skill)
 
-> AI驱动的自动化技能包——从1688采集到速卖通上架，通过店小秘全流程自动完成。
-> An AI-powered automation toolkit that takes a 1688 product and publishes it to AliExpress via Dianxiaomi — end to end.
+> AI-driven browser automation for cross-border e-commerce — **1688 product sourcing automation** to **AliExpress auto listing tool**, via Dianxiaomi ERP. End to end.
+> AI 驱动的浏览器自动化跨境电商工具——**1688采集自动化**到**速卖通自动上架**，经店小秘 ERP，全流程自动完成。
 
 ---
 
@@ -129,6 +130,17 @@ Retail Price = Declared Value = (1688 Cost + ¥5) × 1.02 ÷ 0.413
 
 > **最后一步"保存并移入待发布"按钮对目前已知的所有自动化方法免疫。** 这不是技能包的bug，是店小秘平台的反自动化机制。用户在收到QA扫描完成通知后，需手动点击一次该按钮即可完成上架。
 > **The final "Save and move to pending publish" button resists all known automation methods.** This is Dianxiaomi's anti-automation mechanism, not a bug. After receiving the QA scan completion notification, the user only needs one manual click to finish.
+
+---
+
+---
+
+## Related Repos · 相关仓库
+
+| Repo · 仓库 | What it does · 做什么 |
+|------|------|
+| 🏠 [**Rigi AI Commons**](https://github.com/xiaoyaotsyx-dotcom/Rigi-AI-Commons) | Shared CDP infrastructure + browser automation core · 共用 CDP 基础设施 + 浏览器自动化核心 |
+| 🧠 [**Rigi Auto Experts**](https://github.com/xiaoyaotsyx-dotcom/rigi-auto-experts-ai-agent) | Persona-driven AI experts that control your browser · 人设驱动的 AI 专家，操控你的浏览器干活 |
 
 ---
 
